@@ -25,28 +25,28 @@ SUBFOLDER_NAME="distrib"
 
 
 # прочитаем версию 1С из 1-го параметра при запуске скрипта
-PLATFORM_VERSION=$1
-if [ -z "${PLATFORM_VERSION}" ]; then
-    echo-red "[ ERROR ] Need not empty Platform_version. You can send it in first Param    ($0)"
+VERSION=$1
+if [ -z "${VERSION}" ]; then
+    echo-red "[ ERROR ] Need not empty VERSION. You can send it in first Param    ($0)"
     echo-red "[ EXAMPLE ] ./AL_Download_1c_platform.sh 8.3.22.1709 no My_login My_Pass    ($0)"
     exit 111
 else
-    echo-blue "[ INFO ] Get 1 Param PLATFORM_VERSION=$PLATFORM_VERSION    ($0)"
+    echo-blue "[ INFO ] Get 1 Param VERSION=$VERSION    ($0)"
 fi
 
 
-# 2й параметр  NEED_x64
-NEED_x64=$2
-if [ -z "${NEED_x64}" ]; then
-    echo-red "[ ERROR ] Need not empty NEED_x64. You can send it in second Param    ($0)"
+# 2й параметр  PLATFORM
+PLATFORM=$2
+if [ -z "${PLATFORM}" ]; then
+    echo-red "[ ERROR ] Need not empty PLATFORM. You can send it in second Param    ($0)"
     echo-red "[ EXAMPLE ] ./AL_Download_1c_platform.sh 8.3.22.1709 no My_login My_Pass    ($0)"
     exit 112
-elif [ "$NEED_x64" != "yes" ]  &&  [ "$NEED_x64" != "no" ];  then
-    echo-red "[ ERROR ] Second parm NEED_x64 must be yes or no  (not be $NEED_x64)   ($0)"
+elif [ "$PLATFORM" != "x64" ]  &&  [ "$PLATFORM" != "x32" ];  then
+    echo-red "[ ERROR ] Second parm PLATFORM must be x64 or x32  (not be $PLATFORM)   ($0)"
     echo-yellow "[ EXAMPLE ] ./AL_Download_1c_platform.sh 8.3.22.1709 no My_login My_Pass    ($0)"
     exit 112
 else
-    echo-blue "[ INFO ] Get 2 Param NEED_x64=$NEED_x64    ($0)"
+    echo-blue "[ INFO ] Get 2 Param PLATFORM=$PLATFORM    ($0)"
 fi
 
 
@@ -80,23 +80,23 @@ else
 fi
 
 #подготовим имя платофрмы с "_" вместо точек
-PLATFORM_VERSION_UnderLine=${PLATFORM_VERSION//./_}
+VERSION_UnderLine=${VERSION//./_}
 
 
 
-if [[ -z "$NEED_x64" ]]; then
-    echo-red "[ ERROR ] NEED_x64 should not be empty (yes or no)    ($0)"
+if [[ -z "$PLATFORM" ]]; then
+    echo-red "[ ERROR ] PLATFORM should not be empty (x64 or x32)    ($0)"
     exit 888
-elif [ "$NEED_x64" = "yes" ]; then
+elif [ "$PLATFORM" = "x64" ]; then
     SERVER_POSTFIX="server64"
-elif [ "$NEED_x64" = "no" ]; then
+elif [ "$PLATFORM" = "x32" ]; then
     SERVER_POSTFIX="server32"
 else
-    echo-red "[ ERROR ] NEED_x64 must be yes or no (now NEED_x64=$NEED_x64)   ($0)"
+    echo-red "[ ERROR ] PLATFORM must be x64 or x32 (now PLATFORM=$PLATFORM)   ($0)"
     exit 888
 fi
 
-SERVER_ARCHIVE_FILE_NAME="${SERVER_POSTFIX}_${PLATFORM_VERSION_UnderLine}.tar.gz"
+SERVER_ARCHIVE_FILE_NAME="${SERVER_POSTFIX}_${VERSION_UnderLine}.tar.gz"
 
 
 #технологическая платформа
@@ -168,13 +168,13 @@ fi
 
 
 #технологическая платформа
-FILE_PATH_SERVER="./$SUBFOLDER_NAME/${SERVER_POSTFIX}_${PLATFORM_VERSION_UnderLine}.tar.gz"
+FILE_PATH_SERVER="./$SUBFOLDER_NAME/${SERVER_POSTFIX}_${VERSION_UnderLine}.tar.gz"
 
 
-echo-blue "[ INFO ] starting to download 1c server $PLATFORM_VERSION    ($0)"
+echo-blue "[ INFO ] starting to download 1c server $VERSION    ($0)"
 
-URL_PATH_SERVER="Platform%5c$PLATFORM_VERSION_UnderLine%5c${SERVER_POSTFIX}_$PLATFORM_VERSION_UnderLine.tar.gz"
-URL_HTML_PAGE="https://releases.1c.ru/version_file?nick=Platform83&ver=$PLATFORM_VERSION&path=$URL_PATH_SERVER"
+URL_PATH_SERVER="Platform%5c$VERSION_UnderLine%5c${SERVER_POSTFIX}_$VERSION_UnderLine.tar.gz"
+URL_HTML_PAGE="https://releases.1c.ru/version_file?nick=Platform83&ver=$VERSION&path=$URL_PATH_SERVER"
 HTML_TEXT=$(curl -s -G -b /tmp/cookies.txt $URL_HTML_PAGE)
 URL_FOR_DOWNLOAD=$(echo "$HTML_TEXT" | grep -o 'href="https://dl03[^"]*' | tail -c +7)
 
@@ -185,13 +185,19 @@ if [[ -z "$URL_FOR_DOWNLOAD" ]];then
 fi
 
 echo-blue "[ INFO ] url for download is  $URL_FOR_DOWNLOAD ($0)"
-
 curl --fail -b /tmp/cookies.txt -o $FILE_PATH_SERVER -L "$URL_FOR_DOWNLOAD"
+
+if [ -e $FILE_PATH_SERVER ];then
+    echo-green "[ SUCCESS ] downloaded $FILE_PATH_SERVER    ($0)"
+else
+    echo-red "[ ERROR ] Did not finded archive with platform  $FILE_PATH_SERVER    ($0)"
+fi
+
 
 #тонкий клиент (не очень то нужен, на самом деле)
 THIN_CLIENT_POSTFIX=thin.client64
-FILE_PATH_THIN_CLIENT="./$SUBFOLDER_NAME/${THIN_CLIENT_POSTFIX}_${PLATFORM_VERSION_UnderLine}.tar.gz"
-URL_PATH_THIN_CLIENT="Platform%5c$PLATFORM_VERSION_UnderLine%5c${THIN_CLIENT_POSTFIX}_$PLATFORM_VERSION_UnderLine.tar.gz"
+FILE_PATH_THIN_CLIENT="./$SUBFOLDER_NAME/${THIN_CLIENT_POSTFIX}_${VERSION_UnderLine}.tar.gz"
+URL_PATH_THIN_CLIENT="Platform%5c$VERSION_UnderLine%5c${THIN_CLIENT_POSTFIX}_$VERSION_UnderLine.tar.gz"
 
 #удалим куки...
 rm /tmp/cookies.txt
