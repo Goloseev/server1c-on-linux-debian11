@@ -28,4 +28,9 @@ sudo ufw allow 1540:1541/tcp >> //dev//null
 echo-blue "[ INFO ] ... opening 1560-1590 ports    ($0) "
 sudo ufw allow 1560:1590/tcp >> //dev//null
 
+#Вероятно, надо добавить порт ssh иначе установленный ufw заблокирует
+#будущие подключения по ssh
+echo-blue "[ INFO ] ... opening shh port    ($0) "
+sudo ufw allow ssh >> //dev//null
+
 echo-blue "[ INFO ] FINISHED    ($0) "
