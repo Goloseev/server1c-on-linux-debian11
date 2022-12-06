@@ -41,8 +41,9 @@ echo-blue "[ INFO ] ... DONE ACTIVATING     ($0)"
 
 #посмотрим что получилось...
 echo-blue "[ INFO ] ... SHOWING SERVICE STATUS     ($0)"
-systemctl status srv1cv8-${VERSION}@default
+systemctl status srv1cv8-${VERSION}@default --no-pager -q
 
 echo-blue "[ INFO ] ... SHOWING PROCESSES LIST     ($0)"
 ps ax | grep "1C"
 
+echo-blue "[ INFO ] FINISHED     ($0)"
