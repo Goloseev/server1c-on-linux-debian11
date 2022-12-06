@@ -1,4 +1,5 @@
 #!/bin/bash
+#пример запуска AL_p5_start_server_1c.sh 8.3.22.1709 x64
 
 set -e # Exit immediately if a command exits with a non-zero status.
 export DEBIAN_FRONTEND="noninteractive"
@@ -24,7 +25,6 @@ else
 fi
 
 
-#Даже если это docker - любопытно запустить....
 #Настройка автозапуска службы (начиная 8.3.21) имя экземпляра default
 echo-blue "[ INFO ] ACTIVATING AUTORUN SERVICE     ($0)"
 systemctl link /opt/1cv8/x86_64/${VERSION}/srv1cv8-${VERSION}@.service
@@ -33,9 +33,9 @@ systemctl link /opt/1cv8/x86_64/${VERSION}/srv1cv8-${VERSION}@.service
 systemctl enable srv1cv8-${VERSION}@
 #systemctl start|stop|restart|status srv1cv8-${VERSION}@default
 
+
 echo-blue "[ INFO ] ... STARTING SERVICE     ($0)"
 systemctl start srv1cv8-${VERSION}@default
-
 echo-blue "[ INFO ] ... DONE ACTIVATING     ($0)"
 
 
