@@ -180,6 +180,7 @@ fi
 #server_admin	Установить сервер администрирования кластера серверов «1С:Предприятия» ((см. здесь).
 #ws	Установить модули расширения веб-сервера.
 
+RUN_MODE="SERVER_MODE"
 
 if [ $RUN_MODE = "SERVER_MODE" ]; then
   components_list="server"
@@ -219,23 +220,4 @@ echo-green "[ SUCCESS ] INSTALLING FINISHED     ($0)"
 
 # из старой инструкции на диске ИТС такое еще нашел
 apt-get install -y libfreetype6 libgsf-1-common unixodbc glib2.0  > /dev/null 
-
-#скрипт запускаем из docker, потому запуск не делаем
-exit 0
-
-#Даже если это docker - любопытно запустить....
-#Настройка автозапуска службы (начиная 8.3.21) имя экземпляра default
-echo-blue "[ INFO ] ACTIVATING AUTORUN SERVICE     ($0)"
-systemctl link /opt/1cv8/x86_64/${VERSION}/srv1cv8-${VERSION}@.service
-
-
-systemctl enable srv1cv8-${VERSION}@
-#systemctl start|stop|restart|status srv1cv8-${VERSION}@default
-systemctl start srv1cv8-${VERSION}@default
-echo-blue "[ INFO ] ... DONE ACTIVATING     ($0)"
-
-
-#посмотрим что получилось...
-systemctl status srv1cv8-${VERSION}@default
-ps ax | grep "1C"
 

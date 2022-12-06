@@ -1,5 +1,6 @@
 #!/bin/bash
-#Version 2022-11-24
+#Version 2022-12-06
+# Пример запуска ./AL_p1_download_1c_platform.sh 8.3.22.1709 x64 My_login My_Pass    ($0)"
 
 set -e # Exit immediately if a command exits with a non-zero status.
 
@@ -12,7 +13,7 @@ function echo-magenta { COLOR='\033[35m' ; NORMAL='\033[0m' ; echo -e "${COLOR}$
 function echo-cyan    { COLOR='\033[36m' ; NORMAL='\033[0m' ; echo -e "${COLOR}$1${NORMAL}"; }
 
 #clear
-echo-yellow "[ INFO ] STARTED AL_download_1c_platform.sh----- $0"
+echo-yellow "[ INFO ] STARTED AL_p1_download_1c_platform.sh----- $0"
 
 #перейдем в текущий каталог скрипта
 SCRIPT_FOLDER="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
@@ -28,7 +29,7 @@ SUBFOLDER_NAME="distrib"
 VERSION=$1
 if [ -z "${VERSION}" ]; then
     echo-red "[ ERROR ] Need not empty VERSION. You can send it in first Param    ($0)"
-    echo-red "[ EXAMPLE ] ./AL_Download_1c_platform.sh 8.3.22.1709 no My_login My_Pass    ($0)"
+    echo-red "[ EXAMPLE ] ./AL_p1_download_1c_platform.sh 8.3.22.1709 x64 My_login My_Pass    ($0)"
     exit 111
 else
     echo-blue "[ INFO ] Get 1 Param VERSION=$VERSION    ($0)"
@@ -39,11 +40,11 @@ fi
 PLATFORM=$2
 if [ -z "${PLATFORM}" ]; then
     echo-red "[ ERROR ] Need not empty PLATFORM. You can send it in second Param    ($0)"
-    echo-red "[ EXAMPLE ] ./AL_Download_1c_platform.sh 8.3.22.1709 no My_login My_Pass    ($0)"
+    echo-red "[ EXAMPLE ] ./AL_p1_download_1c_platform.sh 8.3.22.1709 x64 My_login My_Pass    ($0)"
     exit 112
 elif [ "$PLATFORM" != "x64" ]  &&  [ "$PLATFORM" != "x32" ];  then
     echo-red "[ ERROR ] Second parm PLATFORM must be x64 or x32  (not be $PLATFORM)   ($0)"
-    echo-yellow "[ EXAMPLE ] ./AL_Download_1c_platform.sh 8.3.22.1709 no My_login My_Pass    ($0)"
+    echo-yellow "[ EXAMPLE ] ./AL_p1_download_1c_platform.sh 8.3.22.1709 x64 My_login My_Pass    ($0)"
     exit 112
 else
     echo-blue "[ INFO ] Get 2 Param PLATFORM=$PLATFORM    ($0)"
@@ -54,7 +55,7 @@ fi
 USERNAME=$3
 if [[ -z "$USERNAME" ]];then
     echo-red "[ ERROR ] Need not empty USERNAME. You can send it in Third Param    ($0)"
-    echo-red "[ EXAMPLE ] ./AL_Download_1c_platform.sh 8.3.22.1709 no My_login My_Pass    ($0)"
+    echo-red "[ EXAMPLE ] ./AL_p1_download_1c_platform.sh 8.3.22.1709 x64 My_login My_Pass    ($0)"
     exit 1
 else
     echo-blue "[ INFO ] Get 3 Param USERNAME=$USERNAME    ($0)"
@@ -64,7 +65,7 @@ fi
 PASSWORD=$4
 if [[ -z "$PASSWORD" ]];then
     echo-red "[ ERROR ] Need not empty PASSWORD. You can send it in Fourth Param    ($0)"
-    echo-red "[ EXAMPLE ] ./AL_Download_1c_platform.sh 8.3.22.1709 no My_login My_Pass    ($0)"
+    echo-red "[ EXAMPLE ] ./AL_p1_download_1c_platform.sh 8.3.22.1709 x64 My_login My_Pass    ($0)"
     exit 1
 else
     echo-blue "[ INFO ] Get 4 Param PASSWORD=******    ($0)"
