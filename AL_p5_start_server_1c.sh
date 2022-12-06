@@ -1,4 +1,3 @@
-#пример запуска
 #!/bin/bash
 
 set -e # Exit immediately if a command exits with a non-zero status.
@@ -13,7 +12,7 @@ function echo-blue    { COLOR='\033[34m' ; NORMAL='\033[0m' ; echo -e "${COLOR}$
 function echo-magenta { COLOR='\033[35m' ; NORMAL='\033[0m' ; echo -e "${COLOR}$1${NORMAL}"; }
 function echo-cyan    { COLOR='\033[36m' ; NORMAL='\033[0m' ; echo -e "${COLOR}$1${NORMAL}"; }
 
-
+echo-yellow "[ INFO ] ... starting script $0 "
 # прочитаем версию 1С из 1-го параметра при запуске скрипта
 VERSION=$1
 if [ -z "${VERSION}" ]; then
